@@ -25,6 +25,6 @@
   },
   "alias": {
     "view": "./src/view",
-    "lib": "./src/lib"
+    "store": "./src/store"
   }
 }

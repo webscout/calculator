@@ -89,6 +89,14 @@ export const calculatorSlice = createSlice({
   },
 });
 
+export const {
+  digitEntered,
+  decimalSeparatorEntered,
+  resultEntered,
+  cleanEntered,
+  operationEntered,
+} = calculatorSlice.actions;
+
 export const selectDisplayValue = (state: CalculatorState) => {
   if (state.value !== null) {
     return state.value;

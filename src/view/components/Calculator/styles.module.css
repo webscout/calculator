@@ -1,0 +1,16 @@
+.calculator {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 8px;
+  width: 400px;
+}
+
+.calculator button {
+  font-size: 20px;
+  padding: 8px;
+}
+
+.displayValue {
+  font-size: 20px;
+  grid-column: 1 / 4;
+}

@@ -3,6 +3,8 @@
     "jsx": "react",
     "allowSyntheticDefaultImports": true,
     "baseUrl": "./src",
-    "noImplicitAny": true
+    "noImplicitAny": true,
+    "target": "ES2015",
+    "moduleResolution": "Node"
   },
 }
