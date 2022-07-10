@@ -9,9 +9,10 @@ import {
   operationEntered,
   selectDisplayValue,
 } from "store/calculatorSlice";
+import { classes } from "view/helpers/classes";
 import styles from "./styles.module.css";
 
-const digits = [...Array(9).keys()].map(String);
+const digits = [...Array(10).keys()].map(String);
 
 export const Calculator = () => {
   const displayValue = useAppSelector((state) =>
@@ -24,18 +25,42 @@ export const Calculator = () => {
     <div className={styles.calculator}>
       <div className={styles.displayValue}>{displayValue}</div>
 
-      <button onClick={() => dispatch(cleanEntered())}>C</button>
-      <button onClick={() => dispatch(resultEntered())}>=</button>
+      <button
+        className={classes(styles.button, styles.clearButton)}
+        onClick={() => dispatch(cleanEntered())}
+      >
+        C
+      </button>
+      <button
+        className={classes(styles.button, styles.resultButton)}
+        onClick={() => dispatch(resultEntered())}
+      >
+        =
+      </button>
 
       {digits.map((digit) => (
-        <button onClick={() => dispatch(digitEntered({ digit }))}>
+        <button
+          key={digit}
+          className={classes(
+            styles.button,
+            styles.digitButton,
+            styles["digitButton" + digit]
+          )}
+          onClick={() => dispatch(digitEntered({ digit }))}
+        >
           {digit}
         </button>
       ))}
 
-      <button onClick={() => dispatch(decimalSeparatorEntered())}>.</button>
+      <button
+        className={classes(styles.button, styles.separatorButton)}
+        onClick={() => dispatch(decimalSeparatorEntered())}
+      >
+        .
+      </button>
 
       <button
+        className={classes(styles.button, styles.plusButton)}
         onClick={() =>
           dispatch(operationEntered({ operation: Operation.Plus }))
         }
@@ -44,6 +69,7 @@ export const Calculator = () => {
       </button>
 
       <button
+        className={classes(styles.button, styles.minusButton)}
         onClick={() =>
           dispatch(operationEntered({ operation: Operation.Minus }))
         }
@@ -52,6 +78,7 @@ export const Calculator = () => {
       </button>
 
       <button
+        className={classes(styles.button, styles.multiplyButton)}
         onClick={() =>
           dispatch(operationEntered({ operation: Operation.Multiply }))
         }
@@ -60,6 +87,7 @@ export const Calculator = () => {
       </button>
 
       <button
+        className={classes(styles.button, styles.divideButton)}
         onClick={() =>
           dispatch(operationEntered({ operation: Operation.Divide }))
         }
