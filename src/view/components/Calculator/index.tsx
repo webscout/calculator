@@ -11,6 +11,7 @@ import {
 } from "store/calculatorSlice";
 import { classes } from "view/helpers/classes";
 import styles from "./styles.module.css";
+import { useKeyboardCalculator } from "./useKeyboardCalculator";
 
 const digits = [...Array(10).keys()].map(String);
 
@@ -20,6 +21,7 @@ export const Calculator = () => {
   );
 
   const dispatch = useAppDispatch();
+  useKeyboardCalculator();
 
   return (
     <div className={styles.calculator}>
