@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import BigNumber from "bignumber.js";
 
 export enum Operation {
   Plus = "Plus",
@@ -22,13 +23,13 @@ const initialState: CalculatorState = {
 const calculate = (operation: Operation, prevValue: string, value: string) => {
   switch (operation) {
     case Operation.Plus:
-      return String(Number(prevValue) + Number(value));
+      return new BigNumber(prevValue ?? 0).plus(value).toString();
     case Operation.Minus:
-      return String(Number(prevValue) - Number(value));
+      return new BigNumber(prevValue ?? 0).minus(value).toString();
     case Operation.Multiply:
-      return String(Number(prevValue) * Number(value));
+      return new BigNumber(prevValue ?? 0).multipliedBy(value).toString();
     case Operation.Divide:
-      return String(Number(prevValue) / Number(value));
+      return new BigNumber(prevValue ?? 0).dividedBy(value).toString();
   }
 };
 
@@ -86,6 +87,12 @@ export const calculatorSlice = createSlice({
       state,
       action: PayloadAction<{ operation: Operation }>
     ) => {
+      if (action.payload.operation === Operation.Minus && !state.value) {
+        // in that case minus is not an operation but a sign for the next number
+        state.value = "-";
+        return;
+      }
+
       if (state.value !== null) {
         performOperation(state);
       }

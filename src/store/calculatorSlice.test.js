@@ -188,4 +188,17 @@ describe("Calculator tests", () => {
 
     expect(getCalculatorValue()).toBe("6");
   });
+
+  it("0.1+0.2=0.3 (Check for floating point operations)", () => {
+    dispatch(digitEntered({ digit: "0" }));
+    dispatch(decimalSeparatorEntered());
+    dispatch(digitEntered({ digit: "1" }));
+    dispatch(operationEntered({ operation: Operation.Plus }));
+    dispatch(digitEntered({ digit: "0" }));
+    dispatch(decimalSeparatorEntered());
+    dispatch(digitEntered({ digit: "2" }));
+    dispatch(resultEntered());
+
+    expect(getCalculatorValue()).toBe("0.3");
+  });
 });
