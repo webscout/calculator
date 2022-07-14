@@ -177,4 +177,15 @@ describe("Calculator tests", () => {
 
     expect(getCalculatorValue()).toBe("1");
   });
+
+  it("1+2+3=6 (Multiple operations)", () => {
+    dispatch(digitEntered({ digit: "1" }));
+    dispatch(operationEntered({ operation: Operation.Plus }));
+    dispatch(digitEntered({ digit: "2" }));
+    dispatch(operationEntered({ operation: Operation.Plus }));
+    dispatch(digitEntered({ digit: "3" }));
+    dispatch(resultEntered());
+
+    expect(getCalculatorValue()).toBe("6");
+  });
 });

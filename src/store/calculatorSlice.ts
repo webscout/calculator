@@ -19,27 +19,35 @@ const initialState: CalculatorState = {
   prevValue: null,
 };
 
+const calculate = (operation: Operation, prevValue: string, value: string) => {
+  switch (operation) {
+    case Operation.Plus:
+      return String(Number(prevValue) + Number(value));
+    case Operation.Minus:
+      return String(Number(prevValue) - Number(value));
+    case Operation.Multiply:
+      return String(Number(prevValue) * Number(value));
+    case Operation.Divide:
+      return String(Number(prevValue) / Number(value));
+  }
+};
+
 const performOperation = (state: CalculatorState) => {
   const { value, prevValue, operation } = state;
 
-  switch (operation) {
-    case Operation.Plus:
-      state.value = String(Number(prevValue) + Number(value));
-      break;
-    case Operation.Minus:
-      state.value = String(Number(prevValue) - Number(value));
-      break;
-    case Operation.Multiply:
-      state.value = String(Number(prevValue) * Number(value));
-      break;
-    case Operation.Divide:
-      state.value = String(Number(prevValue) / Number(value));
-      break;
-    default:
-      state.value = null;
-  }
+  state.prevValue = operation ? calculate(operation, prevValue, value) : value;
+  state.value = null;
 
-  state.prevValue = value;
+  return state;
+};
+
+const performEqual = (state: CalculatorState) => {
+  const { value, prevValue, operation } = state;
+
+  if (operation) {
+    state.prevValue = value;
+    state.value = operation ? calculate(operation, prevValue, value) : value;
+  }
 
   return state;
 };
@@ -67,9 +75,7 @@ export const calculatorSlice = createSlice({
       }
     },
     resultEntered: (state) => {
-      if (state.operation) {
-        performOperation(state);
-      }
+      performEqual(state);
     },
     cleanEntered: (state) => {
       state.value = initialState.value;
