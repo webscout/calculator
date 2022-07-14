@@ -12,12 +12,14 @@ export interface CalculatorState {
   value: string | null;
   operation: Operation | null;
   prevValue: string | null;
+  enterPressed: boolean;
 }
 
 const initialState: CalculatorState = {
   value: null,
   operation: null,
   prevValue: null,
+  enterPressed: false,
 };
 
 const calculate = (operation: Operation, prevValue: string, value: string) => {
@@ -34,7 +36,11 @@ const calculate = (operation: Operation, prevValue: string, value: string) => {
 };
 
 const performOperation = (state: CalculatorState) => {
-  const { value, prevValue, operation } = state;
+  const { value, prevValue, operation, enterPressed } = state;
+
+  if (enterPressed) {
+    return;
+  }
 
   state.prevValue = operation ? calculate(operation, prevValue, value) : value;
   state.value = null;
@@ -64,24 +70,33 @@ export const calculatorSlice = createSlice({
         return;
       }
 
+      if (state.enterPressed) {
+        state.prevValue = state.value;
+        state.value = null;
+      }
+
       if (state.value === "0" || state.value === null) {
         state.value = digit;
       } else {
         state.value += digit;
       }
+      state.enterPressed = false;
     },
     decimalSeparatorEntered: (state) => {
       if (!state.value.includes(".")) {
         state.value += ".";
       }
+      state.enterPressed = false;
     },
     resultEntered: (state) => {
       performEqual(state);
+      state.enterPressed = true;
     },
     cleanEntered: (state) => {
       state.value = initialState.value;
       state.prevValue = initialState.prevValue;
       state.operation = initialState.operation;
+      state.enterPressed = false;
     },
     operationEntered: (
       state,

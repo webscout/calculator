@@ -96,6 +96,24 @@ describe("Calculator tests", () => {
     expect(getCalculatorValue()).toBe("18");
   });
 
+  it("1/0=Infinity", () => {
+    dispatch(digitEntered({ digit: "1" }));
+    dispatch(operationEntered({ operation: Operation.Divide }));
+    dispatch(digitEntered({ digit: "0" }));
+    dispatch(resultEntered());
+
+    expect(getCalculatorValue()).toBe("Infinity");
+  });
+
+  it("0/0=NaN", () => {
+    dispatch(digitEntered({ digit: "0" }));
+    dispatch(operationEntered({ operation: Operation.Divide }));
+    dispatch(digitEntered({ digit: "0" }));
+    dispatch(resultEntered());
+
+    expect(getCalculatorValue()).toBe("NaN");
+  });
+
   describe("Basic math operations", () => {
     it("2+3=4", () => {
       dispatch(digitEntered({ digit: "2" }));
@@ -187,6 +205,28 @@ describe("Calculator tests", () => {
     dispatch(resultEntered());
 
     expect(getCalculatorValue()).toBe("6");
+  });
+
+  it("1+2=+3=6 (operation after equal sign)", () => {
+    dispatch(digitEntered({ digit: "1" }));
+    dispatch(operationEntered({ operation: Operation.Plus }));
+    dispatch(digitEntered({ digit: "2" }));
+    dispatch(resultEntered());
+    dispatch(operationEntered({ operation: Operation.Plus }));
+    dispatch(digitEntered({ digit: "3" }));
+    dispatch(resultEntered());
+
+    expect(getCalculatorValue()).toBe("6");
+  });
+
+  it("1+2=3 (reset number if enter it after equal sign)", () => {
+    dispatch(digitEntered({ digit: "1" }));
+    dispatch(operationEntered({ operation: Operation.Plus }));
+    dispatch(digitEntered({ digit: "2" }));
+    dispatch(resultEntered());
+    dispatch(digitEntered({ digit: "5" }));
+
+    expect(getCalculatorValue()).toBe("5");
   });
 
   it("0.1+0.2=0.3 (Check for floating point operations)", () => {
